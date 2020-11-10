@@ -26,6 +26,13 @@ app.use(session({
     }
 }))
 
+//Top level middleware
+//This will fire for any and all of the endpoints
+app.use((req, res, next) => {
+    console.log("Customer top level hit!")
+    next();
+})
+
 //By invoking massive, we are connecting to the database
 massive({
     connectionString: CONNECTION_STRING,
@@ -40,7 +47,15 @@ massive({
 // Enpoints
 //registering a  new user is a post method
 app.post('/auth/register', auth.register);
-app.post('/auth/login', auth.login);
+app.post('/auth/login', 
+    (req, res, next) => { //Request Level Middleware
+        if(req.body.password === "12345"){
+            console.log("That's the same password I keep on my luggage")
+        }
+        next();
+    },
+    auth.login);
+
 app.post('/auth/logout', auth.logout);
 app.get('/auth/get_user', auth.getUser);
 
