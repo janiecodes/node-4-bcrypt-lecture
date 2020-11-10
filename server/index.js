@@ -38,5 +38,10 @@ massive({
 }).catch( err => console.log(err));
 
 // Enpoints
+//registering a  new user is a post method
+app.post('/auth/register', auth.register);
+app.post('/auth/login', auth.login);
+app.post('/auth/logout', auth.logout);
+app.get('/auth/get_user', auth.getUser);
 
 app.listen(SERVER_PORT, () => console.log(`Connected to port ${SERVER_PORT}⛵⚓`))
